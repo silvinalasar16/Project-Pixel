@@ -23,6 +23,18 @@ var nombreColores = ['White', 'LightYellow',
 // Variable jQuery para guardar el elemento 'color-personalizado'
 // Es decir, el que se elige con la rueda de color.
 var $colorPersonalizado = $('#color-personalizado');
+var $palette = $('#paleta');
+var $colourOfIndicator = $('#indicador-de-color');
+var $colourOfIndicatorMessage = $('#indicador-de-color-mensaje');
+var $colourPersonalized = $('#color-personalizado');
+var $save = $('#guardar');
+var $deshacer = $('#borrar');
+var $pixelsGrid = $('#grilla-pixeles');
+
+function paletteGenerator(nombreColores){
+
+
+});
 
 $colorPersonalizado.change(function() {
   // Se guarda el color de la rueda en colorActual
