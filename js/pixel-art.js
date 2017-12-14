@@ -22,23 +22,56 @@ var nombreColores = ['White', 'LightYellow',
 
 // Variable jQuery para guardar el elemento 'color-personalizado'
 // Es decir, el que se elige con la rueda de color.
+var mouseApretado = false;
+var $pixelsGrid = ('#grilla-pixeles');
 var $colorPersonalizado = $('#color-personalizado');
 var $palette = $('#paleta');
+var valorColorPersonalizado = $colorPersonalizado.val();
 var $colourOfIndicator = $('#indicador-de-color');
 var $colourOfIndicatorMessage = $('#indicador-de-color-mensaje');
-var $colourPersonalized = $('#color-personalizado');
+
 var $save = $('#guardar');
 var $deshacer = $('#borrar');
-var $pixelsGrid = $('#grilla-pixeles');
 
-function paletteGenerator(nombreColores){
+function cambiarIndicadorDePincel(color){
+  $colourOfIndicator.css('background-color', color);
+  $colourOfIndicatorMessage.text('pincel: ${color}');
+}
+//Armar paleta de colores para ser utilizados luego al pintar cada pixel//
+function paletteGenerator(){
+  for (var nombreColor of nombreColores) {
+      var $swatch = $('<div/>', {"class": 'color-paleta'});
+      $palette.append($swatch);
+      $swatch.css('background-color', nombreColor);
+    }
+};
+//armado de grilla para ser recorrida mediante el bucle for//
+function pixelsOfGrid(){
+  for(pix=0 ; pix < 1749; pix++){
+    var $pixel = ('<div/>');
+    $pixelsGrid.append($pixel);
+  }
+};
 
-
-});
+function eleccionDeColor(event){
+  colorActual = $(event.target).css('background-color');
+  cambiarIndicadorDePincel(colorActual);
+}
 
 $colorPersonalizado.change(function() {
   // Se guarda el color de la rueda en colorActual
   var colorActual = $colorPersonalizado.val();
   // Completar para que cambie el indicador-de-color al colorActual
-
+cambiarIndicadorDePincel(colorActual);
 });
+
+function apretarMouse(){
+  mouseApretado=true;
+}
+
+function soltarMouse(){
+  mouseApretado=false;
+}
+
+paletteGenerator();
+pixelsOfGrid();
