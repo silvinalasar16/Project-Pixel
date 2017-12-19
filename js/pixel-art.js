@@ -32,7 +32,7 @@ var $borrar= $('#borrar');
 function cambiandoIndicadoresDePincel(color){
   $indicadorDeColor.css('background-color', color);
   $indicadorColorMensaje.text(`Pincel: ${color}`);
-;
+}
 //Armar paleta de colores para ser utilizados luego al pintar cada pixel//
 function armadoDePaleta(){
   for (var nombreColor of nombreColores) {
