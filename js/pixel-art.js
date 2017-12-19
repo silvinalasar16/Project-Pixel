@@ -1,4 +1,4 @@
-var nombreColores = ['White', 'LightYellow',
+ var nombreColores = ['White', 'LightYellow',
   'LemonChiffon', 'LightGoldenrodYellow', 'PapayaWhip', 'Moccasin', 'PeachPuff', 'PaleGoldenrod', 'Bisque', 'NavajoWhite', 'Wheat', 'BurlyWood', 'Tan',
   'Khaki', 'Yellow', 'Gold', 'Orange', 'DarkOrange', 'OrangeRed', 'Tomato', 'Coral', 'DarkSalmon', 'LightSalmon', 'LightCoral', 'Salmon', 'PaleVioletRed',
   'Pink', 'LightPink', 'HotPink', 'DeepPink', 'MediumVioletRed', 'Crimson', 'Red', 'FireBrick', 'DarkRed', 'Maroon',
@@ -20,25 +20,21 @@ var nombreColores = ['White', 'LightYellow',
   'DimGray', 'LightSlateGray', 'DarkSlateGray', 'Black'
 ];
 
-// Variable jQuery para guardar el elemento 'color-personalizado'
-// Es decir, el que se elige con la rueda de color.
-var mouseApretado = false;
-var $pixelsGrid = ('#grilla-pixeles');
 var $colorPersonalizado = $('#color-personalizado');
-var $palette = $('#paleta');
+var $indicadorDeColor = $('#indicador-de-color');
+var $grillaDePixeles = $('#grilla-pixeles');
 var valorColorPersonalizado = $colorPersonalizado.val();
-var $colourOfIndicator = $('#indicador-de-color');
-var $colourOfIndicatorMessage = $('#indicador-de-color-mensaje');
+var mouseApretado = false;
+var $palette = $('#paleta');
+var $indicadorColorDeMensaje = $('#indicador-de-color-mensaje');
+var $borrar= $('#borrar');
 
-var $save = $('#guardar');
-var $deshacer = $('#borrar');
-
-function cambiarIndicadorDePincel(color){
-  $colourOfIndicator.css('background-color', color);
-  $colourOfIndicatorMessage.text('pincel: ${color}');
-}
+function cambiandoIndicadoresDePincel(color){
+  $indicadorDeColor.css('background-color', color);
+  $indicadorColorMensaje.text(`Pincel: ${color}`);
+;
 //Armar paleta de colores para ser utilizados luego al pintar cada pixel//
-function paletteGenerator(){
+function armadoDePaleta(){
   for (var nombreColor of nombreColores) {
       var $swatch = $('<div/>', {"class": 'color-paleta'});
       $palette.append($swatch);
@@ -46,32 +42,70 @@ function paletteGenerator(){
     }
 };
 //armado de grilla para ser recorrida mediante el bucle for//
-function pixelsOfGrid(){
-  for(pix=0 ; pix < 1749; pix++){
-    var $pixel = ('<div/>');
-    $pixelsGrid.append($pixel);
+function armadoDeGrilla(){
+  for(var i = 0 ; i < 1749; i ++){
+    var $pixel = ('<div />');
+    $grillaDePixeles.append($pixel);
   }
 };
 
 function eleccionDeColor(event){
   colorActual = $(event.target).css('background-color');
-  cambiarIndicadorDePincel(colorActual);
-}
+  cambiandoIndicadoresDePincel(colorActual);
+};
+
+function pintandoPixeles(event){
+  colorActual = $indicadorDeColor.css('background-color');
+  $(event.target).css('background-color', colorActual);
+};
 
 $colorPersonalizado.change(function() {
   // Se guarda el color de la rueda en colorActual
-  var colorActual = $colorPersonalizado.val();
-  // Completar para que cambie el indicador-de-color al colorActual
-cambiarIndicadorDePincel(colorActual);
+  colorActual = $colorPersonalizado.val();
+  cambiandoIndicadoresDePincel(colorActual);
 });
 
 function apretarMouse(){
   mouseApretado=true;
-}
+};
 
 function soltarMouse(){
   mouseApretado=false;
-}
+};
+function pintandoEnMovimiento(event){
+  if (mouseApretado) {
+    pintandoPixeles(event);
+  }
+};
 
-paletteGenerator();
-pixelsOfGrid();
+function desvanecer(){   //se "borra" lo que hemos pintado. vuelve a blanco
+  $pixeles = $( "#grilla-pixeles div" )
+  $pixeles.each(function() {
+    $( this ).animate({ "backgroundColor": "white"}, 1000 );
+  });
+}
+$('#batman').click( function(){
+  cargarSuperheroe(batman);
+});
+$('#wonder').click( function(){
+  cargarSuperheroe(wonder);
+});
+$('#flash').click( function(){
+  cargarSuperheroe(flash);
+});
+$('#invisible').click( function(){
+  cargarSuperheroe(invisible);
+});
+$('#guardar').click( function(){
+  guardarPixelArt();
+});
+
+$grillaDePixeles.mousedown(apretarMouse);
+$grillaDePixeles.mousemove(pintandoEnMovimiento);
+$(window).mouseup(soltarMouse);
+$palette.click(eleccionDeColor);
+$grillaDePixeles.click(pintandoPixeles);
+armadoDePaleta();
+armadoDeGrilla();
+$colorPersonalizado.change();
+$borrarTodo.click();
